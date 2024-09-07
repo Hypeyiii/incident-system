@@ -207,7 +207,7 @@ export default function SingleIncident({
           onClick={handleAssign}
           className="w-full py-3 px-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Asignar Incidencia
+          Actualizar Incidencia
         </button>
         <button
           type="button"
@@ -222,9 +222,7 @@ export default function SingleIncident({
           Incidencia actualizada con éxito
         </p>
       )}
-      {loading && (
-        <LoadingTransition />
-      )}
+      {loading && <LoadingTransition />}
     </form>
   );
 }

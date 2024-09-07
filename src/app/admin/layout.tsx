@@ -19,7 +19,9 @@ export default function RootLayout({
     <div className={inter.className}>
         <Navbar />
         <SideNavbar />
-        {children}
+        <div className="fixed flex flex-col gap-20 top-0 right-0 w-[85%] h-full mt-[57px] p-10 bg-[#cfc18c33]">
+          {children}
+        </div>
     </div>
   );
 }

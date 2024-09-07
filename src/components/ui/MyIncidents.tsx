@@ -1,39 +1,14 @@
 "use client";
 
-import { useUser } from "@/context/UserContext";
-import { TIncident } from "@/lib/types";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function Incidents() {
-  const [data, setData] = useState<TIncident[]>([]);
-  const { user } = useUser();
-
-  useEffect(() => {
-    fetch("/api/incidents")
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  }, []);
-
-  const incidents = data.filter(
-    (p) => p.assigned_to === user?.id && p.status !== "resolved"
-  );
-
-  if (incidents.length === 0) {
-    return (
-      <div className="flex flex-col w-full border border-gray-300 rounded-lg shadow-lg h-fit max-h-[500px] overflow-y-auto">
-        <h1 className="text-white bg-blue-500 uppercase text-sm font-semibold flex items-center justify-center py-3 rounded-t-lg">
-          Incidencias - L2
-        </h1>
-        <div className="flex items-center justify-center h-full py-5">
-          <h1>
-            No hay incidencias asignadas{" "}
-            <span className="underline">{user?.name}</span>
-          </h1>
-        </div>
-      </div>
-    );
-  }
+export default function MyIncidents({
+  incidents,
+  user,
+}: {
+  incidents: any[];
+  user: any;
+}) {
 
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-lg shadow-lg h-fit max-h-[500px] overflow-y-auto">
@@ -49,6 +24,7 @@ export default function Incidents() {
               <th className="py-2 px-4 text-center">Priority</th>
               <th className="py-2 px-4 text-center">Department</th>
               <th className="py-2 px-4 text-center">Short Description</th>
+              <th className="py-2 px-4 text-center">State</th>
               <th className="py-2 px-4 text-center">Updated</th>
             </tr>
           </thead>
@@ -87,6 +63,7 @@ export default function Incidents() {
                 </td>
                 <td className="py-2 px-4">{incident.department}</td>
                 <td className="py-2 px-4">{incident.title}</td>
+                <td className={`py-1 px-4 w-fit h-auto rounded-full ${incident.status === "resolved" && "bg-green-200 text-green-500"}`}>{incident.status}</td>
                 <td className="py-2 px-4">
                   {incident.updated_at?.toLocaleString()}
                 </td>
