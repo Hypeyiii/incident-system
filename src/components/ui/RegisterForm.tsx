@@ -7,12 +7,19 @@ import Image from "next/image";
 import logo from "@/app/public/servicenow.webp";
 import Link from "next/link";
 import { useUser } from "@/context/UserContext";
+import {
+  EnvelopeIcon,
+  KeyIcon,
+  UserGroupIcon,
+  UserIcon,
+} from "@heroicons/react/24/outline";
+import LoadingTransition from "./LoadingTransition";
 
 export default function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [department, setDepartment] = useState<string>("");
+  const [department, setDepartment] = useState<number>(0);
   const [departments, setDepartments] = useState<
     { id: string; name: string }[]
   >([]);
@@ -50,7 +57,7 @@ export default function RegisterForm() {
         email,
         password,
         name,
-        department,
+        department_id: department,
       });
 
       if (response.data.success) {
@@ -72,6 +79,7 @@ export default function RegisterForm() {
 
   return (
     <section className="flex flex-col items-center justify-center w-full h-screen bg-[#2e3d4b]">
+      {loading && <LoadingTransition />}
       <Image
         src={logo}
         alt="ServiceNow Logo"
@@ -80,59 +88,71 @@ export default function RegisterForm() {
       />
       <form
         onSubmit={handleSubmit}
-        className="bg-white flex-col gap-2 p-10 rounded-lg relative"
+        className="bg-white flex flex-col gap-5 p-10 rounded-lg relative md:h-[450px] w-fit md:w-[400px]"
       >
-        <label htmlFor="name">
-          <h1>Name</h1>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-            required
-          />
+        <label htmlFor="name" className="relative">
+          <div className="relative">
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 focus:outline-[#81B5A1]"
+              required
+            />
+            <UserIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
         </label>
         <label htmlFor="email">
-          <h1>Email</h1>
-          <input
-            type="email" // Changed from "text" to "email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-            required
-          />
+          <div className="relative">
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 focus:outline-[#81B5A1]"
+              required
+            />
+            <EnvelopeIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
         </label>
         <label htmlFor="password">
-          <h1>Password</h1>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-            required
-          />
+          <div className="relative">
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500 focus:outline-[#81B5A1]"
+              required
+            />
+            <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
         </label>
         <label htmlFor="department">
-          <h1>Department</h1>
-          <select
-            id="department"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            className="w-full p-2 mb-2 border border-gray-300 rounded-md"
-            required
-          >
-            <option value="" disabled>
-              Select a department
-            </option>
-            {departments.map((dept) => (
-              <option key={dept.id} value={dept.id}>
-                {dept.name}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="department"
+              value={department}
+              onChange={(e) => setDepartment(Number(e.target.value))}
+              className="peer bg-transparent block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 text-gray-500 focus:text-black focus:outline-[#81B5A1]"
+              required
+            >
+              {departments.map((dept) => (
+                <option
+                  key={dept.id}
+                  value={dept.id}
+                  className="text-xs font-sans cursor-pointer"
+                >
+                  {dept.name}
+                </option>
+              ))}
+            </select>
+            <UserGroupIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          </div>
         </label>
         <button
           type="submit"

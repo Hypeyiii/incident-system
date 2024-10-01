@@ -2,12 +2,20 @@
 
 import LoadingTransition from "@/components/ui/LoadingTransition";
 import MyIncidents from "@/components/ui/MyIncidents";
+import { useUser } from "@/context/UserContext";
 import { TIncident } from "@/lib/types";
 import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function Page() {
   const [data, setData] = useState<TIncident[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchIncidents = async () => {
@@ -31,8 +39,37 @@ export default function Page() {
   }
 
   const incidents = data.filter(
-    (p) => p.status == "open" && p.assigned_to != null
+    (p) => p.status == "open" && p.assigned_to == user?.id
   );
+
+  const chartData = {
+    labels: ['Incidencias asignadas','Incidencias abiertas'],
+    datasets: [
+      {
+        label: 'Número de Incidencias',
+        data: [
+          data.length,
+          incidents.filter((incident) => incident.status === 'open').length,
+        ],
+        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+        borderColor: ['rgba(54, 162, 235, 1)','rgba(255, 99, 132, 1)'],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: true,
+        text: 'Resumen de Incidencias',
+      },
+    },
+  };
 
   if (incidents.length === 0 && !loading) {
     return (
@@ -47,5 +84,10 @@ export default function Page() {
     );
   }
 
-  return <MyIncidents incidents={incidents} />;
+  return <div>
+    <section className="w-full flex items-center justify-center max-h-[500px]">
+    <Bar data={chartData} options={chartOptions} />
+    </section>
+    <MyIncidents incidents={incidents} />
+  </div>;
 }

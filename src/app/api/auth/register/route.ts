@@ -16,10 +16,10 @@ interface User {
 }
 
 export async function POST(req: NextRequest) {
-  const { email, password, name, department } = await req.json();
+  const { email, password, name, department_id } = await req.json();
   const id = randomUUID();
 
-  if (!email || !password || !name || !department) {
+  if (!email || !password || !name || !department_id) {
     return NextResponse.json(
       { error: "Todos los campos son obligatorios" },
       { status: 400 }
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     const result = (await queryDatabase(
       `INSERT INTO users (id, email, password, name, department_id, rol_id) VALUES (?, ?, ?, ?, ?, ?)`,
-      [id, email, hashedPassword, name, department, defaultRoleId]
+      [id, email, hashedPassword, name, department_id, defaultRoleId]
     )) as { affectedRows: number };
 
     if (result.affectedRows === 1) {
@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
           email,
           name,
           rol: defaultRoleId,
+          department_id: department_id,
         },
         "secret-json-web-token"
       );
@@ -75,7 +76,7 @@ export async function POST(req: NextRequest) {
           id,
           email,
           name,
-          department_id: department,
+          department_id: department_id,
           rol_id: defaultRoleId,
         },
       });

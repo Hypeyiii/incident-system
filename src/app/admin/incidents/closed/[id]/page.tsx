@@ -1,34 +1,18 @@
 "use client";
 
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { useEffect, useState } from "react";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
 import MyIncidents from "@/components/ui/MyIncidents";
 import { TIncident, TUser } from "@/lib/types";
-import { useUser } from "@/context/UserContext";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function Page({ params }: { params: { id: string } }) {
   const [data, setData] = useState<TIncident[]>([]);
+  const [users, setUsers] = useState<TUser[]>([]);
   const [loading, setLoading] = useState(false);
   const { id } = params;
-  const { user } = useUser();
 
   useEffect(() => {
     const fetchIncidents = async () => {
@@ -43,7 +27,20 @@ export default function Page({ params }: { params: { id: string } }) {
         setLoading(false);
       }
     };
+    const fetUsers = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch("/api/users");
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("fetchUsers error: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetUsers();
     fetchIncidents();
   }, []);
 
@@ -60,30 +57,21 @@ export default function Page({ params }: { params: { id: string } }) {
     );
   }
 
-  const incidents = data.filter(
-    (p) => p.assigned_to == user?.id && p.status === "resolved"
-  );
+  const incidents = data.filter((p) => p.assigned_to == id && p.status === 'resolved');
+  const user = users.find((u) => u.id == id);
 
   const chartData = {
-    labels: ["Incidencias asignadas", "Incidencias cerradas"],
+    labels: ['Incidencias asignadas', 'Incidencias cerradas'],
     datasets: [
       {
-        label: "Número de Incidencias",
+        label: 'Número de Incidencias',
         data: [
           data.length,
-          incidents.filter((incident) => incident.status === "resolved").length,
-          incidents.filter((incident) => incident.status === "open").length,
+          incidents.filter((incident) => incident.status === 'resolved').length,
+          incidents.filter((incident) => incident.status === 'open').length,
         ],
-        backgroundColor: [
-          "rgba(54, 162, 235, 0.5)",
-          "rgba(75, 192, 192, 0.5)",
-          "rgba(255, 99, 132, 0.5)",
-        ],
-        borderColor: [
-          "rgba(54, 162, 235, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(255, 99, 132, 1)",
-        ],
+        backgroundColor: ['rgba(54, 162, 235, 0.5)', 'rgba(75, 192, 192, 0.5)', 'rgba(255, 99, 132, 0.5)'],
+        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
         borderWidth: 1,
       },
     ],
@@ -93,11 +81,11 @@ export default function Page({ params }: { params: { id: string } }) {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        position: 'top' as const,
       },
       title: {
         display: true,
-        text: "Resumen de Incidencias",
+        text: 'Resumen de Incidencias',
       },
     },
   };
@@ -127,3 +115,4 @@ export default function Page({ params }: { params: { id: string } }) {
     </section>
   );
 }
+

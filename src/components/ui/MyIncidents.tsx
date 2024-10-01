@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 
-export default function MyIncidents({
-  incidents,
-  user,
-}: {
-  incidents: any[];
-  user: any;
-}) {
-
+export default function MyIncidents({ incidents }: { incidents: any[] }) {
   return (
     <div className="flex flex-col w-full border border-gray-300 rounded-lg shadow-lg h-fit max-h-[500px] overflow-y-auto">
       <h1 className="text-white bg-blue-500 uppercase text-sm font-semibold flex items-center justify-center py-3 rounded-t-lg">
@@ -63,7 +56,21 @@ export default function MyIncidents({
                 </td>
                 <td className="py-2 px-4">{incident.department}</td>
                 <td className="py-2 px-4">{incident.title}</td>
-                <td className={`py-1 px-4 w-fit h-auto rounded-full ${incident.status === "resolved" && "bg-green-200 text-green-500"}`}>{incident.status}</td>
+                <td className={`px-2 py-1`}>
+                  <span
+                    className={`px-2 py-1 rounded-full w-fit h-fit text-xs font-semibold ${
+                      incident.status === "resolved" &&
+                      "bg-green-200 text-green-500"
+                    } ${
+                      incident.status === "inprogress" &&
+                      "bg-yellow-100 text-yellow-700"
+                    } ${
+                      incident.status === "open" && "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {incident.status}
+                  </span>
+                </td>
                 <td className="py-2 px-4">
                   {incident.updated_at?.toLocaleString()}
                 </td>

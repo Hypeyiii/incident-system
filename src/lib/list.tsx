@@ -1,8 +1,11 @@
 import {
-  LockClosedIcon,
+  CheckCircleIcon,
   MegaphoneIcon,
+  UserCircleIcon,
   UserGroupIcon,
+  UserIcon,
   UserMinusIcon,
+  UsersIcon,
 } from "@heroicons/react/24/outline";
 import HomeModernIcon from "@heroicons/react/24/outline/esm/HomeModernIcon";
 
@@ -16,13 +19,19 @@ export const navsideAdmin = [
   {
     title: "Mis incidencias",
     href: "/admin/incidents",
-    icon: <UserMinusIcon />,
+    icon: <UserIcon />,
     color: "#71e279",
   },
   {
-    title: "Incidencias cerradas",
+    title: "Asignadas a mi",
+    href: "/admin/incidents/assigned",
+    icon: <UserCircleIcon />,
+    color: "#71e279",
+  },
+  {
+    title: "Incidencias resueltas",
     href: "/admin/incidents/closed",
-    icon: <LockClosedIcon />,
+    icon: <CheckCircleIcon />,
     color: "#71e279",
   },
   {
@@ -32,9 +41,15 @@ export const navsideAdmin = [
     color: "#71e279",
   },
   {
+    title: "Administradores",
+    href: "/admin/admins",
+    icon: <UserGroupIcon />,
+    color: "#71e279",
+  },
+  {
     title: "Usuarios",
     href: "/admin/users",
-    icon: <UserGroupIcon />,
+    icon: <UsersIcon />,
     color: "#71e279",
   },
 ];

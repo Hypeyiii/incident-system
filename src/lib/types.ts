@@ -4,7 +4,7 @@ export type ProductsProps = {
 };
 
 export type TIncident = {
-  id: number;
+  id: number | string;
   title: string;
   description: string;
   status?: string;

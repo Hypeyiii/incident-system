@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import LoadingTransition from "./LoadingTransition";
 
@@ -102,7 +101,7 @@ export default function SingleIncident({
           name="title"
           type="text"
           defaultValue={incident.title}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
           required
           readOnly
         />
@@ -112,7 +111,7 @@ export default function SingleIncident({
         <textarea
           name="description"
           defaultValue={incident.description}
-          className="w-full h-fit bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
           required
           readOnly
         />
@@ -123,7 +122,7 @@ export default function SingleIncident({
           type="text"
           name="description"
           defaultValue={incident.reported_by_name}
-          className="w-full h-fit bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
           required
           readOnly
         />
@@ -134,7 +133,7 @@ export default function SingleIncident({
           type="text"
           readOnly
           value={incident.priority}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
         />
       </div>
       <div className="flex flex-row items-center [&>label]:w-[20%] [&>input]:w-full">
@@ -143,7 +142,7 @@ export default function SingleIncident({
           type="text"
           readOnly
           value={incident.category}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
         />
       </div>
       <div className="flex flex-row items-center [&>label]:w-[20%] [&>input]:w-full">
@@ -152,7 +151,7 @@ export default function SingleIncident({
           type="text"
           readOnly
           value={incident.department}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
         />
       </div>
       <div className="flex flex-row items-center [&>label]:w-[20%] [&>input]:w-full">
@@ -161,7 +160,7 @@ export default function SingleIncident({
           type="text"
           readOnly
           value={incident.severity}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
         />
       </div>
       <div className="flex flex-row items-center [&>label]:w-[20%] [&>input]:w-full">
@@ -169,7 +168,7 @@ export default function SingleIncident({
         <select
           value={assignedTo}
           onChange={(e) => setAssignedTo(e.target.value)}
-          className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+          className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50"
         >
           <option value="">No asignado</option>
           {users
@@ -187,7 +186,7 @@ export default function SingleIncident({
           <textarea
             value={incident.closed_info}
             onChange={(e) => setClosedInfo(e.target.value)}
-            className="w-full h-24 bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+            className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50 h-24"
             readOnly
           />
         </div>
@@ -197,7 +196,7 @@ export default function SingleIncident({
           <textarea
             value={closedInfo}
             onChange={(e) => setClosedInfo(e.target.value)}
-            className="w-full h-24 bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
+            className="w-full py-5 px-3 text-xs border rounded-xl bg-gray-50 h-24"
           />
         </div>
       )}

@@ -1,5 +1,6 @@
 "use client";
 
+import LoadingTransition from "@/components/ui/LoadingTransition";
 import MyIncidents from "@/components/ui/MyIncidents";
 import { useUser } from "@/context/UserContext";
 import { TIncident } from "@/lib/types";
@@ -28,19 +29,10 @@ export default function Page() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex flex-col w-full border border-gray-300 rounded-lg shadow-lg h-fit max-h-[500px] overflow-y-auto">
-        <h1 className="text-white bg-blue-500 uppercase text-sm font-semibold flex items-center justify-center py-3 rounded-t-lg">
-          Incidencias - L2
-        </h1>
-        <div className="flex items-center justify-center h-full py-5">
-          <h1>Obtniendo incidencias</h1>
-        </div>
-      </div>
-    );
+    return <LoadingTransition />;
   }
 
-  const incidents = data.filter((p) => p.assigned_to === user?.id && p.status != "resolved");
+  const incidents = data.filter((p) => p.assigned_to === user?.id);
 
   if (incidents.length === 0 && !loading) {
     return (
@@ -58,5 +50,5 @@ export default function Page() {
     );
   }
 
-  return <MyIncidents incidents={incidents} user={user} />;
+  return <MyIncidents incidents={incidents} />;
 }

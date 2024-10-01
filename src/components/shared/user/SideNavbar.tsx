@@ -18,7 +18,7 @@ export default function SideNavbar() {
               item.color
             }] ${
               item.href === currentPath ? " bg-[#303a46]" : "text-white/70"
-            } border-b border-black/20 p-5 
+            } border-b border-black/20 p-5 text-xs
                         hover:bg-[#303a46] hover:text-[${
                           item.color
                         }] cursor-pointer`}

@@ -7,28 +7,32 @@ export default function User({ user }: { user: any }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [userRole, setUserRole] = useState<number | string>(
-    user.role_name || ""
-  );
+  const [userRole, setUserRole] = useState<number>(user.rol_id); // Valor inicial del rol
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchRoles = async () => {
       try {
         const response = await fetch("/api/rols");
         if (response.ok) {
           const data = await response.json();
           setRol(data);
         } else {
+          setError("Error al cargar los roles.");
         }
-      } catch (error) {}
+      } catch (error) {
+        setError("Error al conectarse al servidor.");
+      }
     };
 
-    fetchUsers();
+    fetchRoles();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
+    setSuccess("");
+
     try {
       const response = await fetch(`/api/users/${user.id}`, {
         method: "PUT",
@@ -39,17 +43,17 @@ export default function User({ user }: { user: any }) {
       });
 
       if (response.ok) {
-        setSuccess("Cambios guardados con éxito");
+        setSuccess("Cambios guardados con éxito.");
       } else {
+        setError("Hubo un error al guardar los cambios.");
       }
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      }
+      setError("Error al guardar los cambios.");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -58,9 +62,8 @@ export default function User({ user }: { user: any }) {
       <div className="flex flex-row gap-2 items-center [&>label]:w-[20%] [&>input]:w-full">
         <label className="block text-gray-700 text-sm">Nombre:</label>
         <input
-          name="title"
           type="text"
-          defaultValue={user.name}
+          value={user.name}
           className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
           readOnly
         />
@@ -68,9 +71,8 @@ export default function User({ user }: { user: any }) {
       <div className="flex flex-row gap-2 items-center [&>label]:w-[20%] [&>input]:w-full">
         <label className="block text-gray-700 text-sm">Correo:</label>
         <input
-          name="title"
           type="text"
-          defaultValue={user.email}
+          value={user.email}
           className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
           readOnly
         />
@@ -78,24 +80,23 @@ export default function User({ user }: { user: any }) {
       <div className="flex flex-row gap-2 items-center [&>label]:w-[20%] [&>input]:w-full">
         <label className="block text-gray-700 text-sm">Departamento:</label>
         <input
-          name="title"
           type="text"
-          defaultValue={user.department_name}
+          value={user.department_name}
           className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
           readOnly
         />
       </div>
-      <div className="flex flex-row gap-2 items-center [&>label]:w-[20%] [&>input]:w-full">
-        <label className="block text-gray-700">Rol a:</label>
+      <div className="flex flex-row gap-2 items-center [&>label]:w-[20%] [&>select]:w-full">
+        <label className="block text-gray-700">Rol:</label>
         <select
           value={userRole}
-          onChange={(e) => setUserRole(e.target.value)}
+          onChange={(e) => setUserRole(Number(e.target.value))}
           className="w-full bg-yellow-200/20 border-black/20 text-black/60 py-3 px-1 text-sm border rounded-lg focus:outline-none"
         >
-          <option value="">No asignado</option>
-          {rol.map((rol) => (
-            <option key={rol.id} value={rol.id}>
-              {rol.name}
+          <option value="">Selecciona un rol</option>
+          {rol.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name}
             </option>
           ))}
         </select>
@@ -103,6 +104,7 @@ export default function User({ user }: { user: any }) {
       <button
         type="submit"
         className="col-span-2 bg-yellow-500 text-white py-2 px-4 rounded-lg"
+        disabled={loading}
       >
         {loading ? "Guardando cambios..." : "Guardar cambios"}
       </button>

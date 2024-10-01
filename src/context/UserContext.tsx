@@ -3,9 +3,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface UserContextProps {
-  user: { email: string; password: string, rol_id?: number, name: string, id: string; department: string; } | null;
+  user: { email: string; password: string, rol_id?: number, name: string, id: string; department_id: number; } | null;
   setUser: React.Dispatch<
-    React.SetStateAction<{ email: string; password: string; name: string; id: string; department: string; } | null>
+    React.SetStateAction<{ email: string; password: string; name: string; id: string; department_id: number; } | null>
   >;
 }
 
@@ -14,7 +14,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<{ email: string; password: string, name: string, id: string; department: string; } | null>(
+  const [user, setUser] = useState<{ email: string; password: string, name: string, id: string; department_id: number; } | null>(
     null
   );
 

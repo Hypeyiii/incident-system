@@ -10,7 +10,7 @@ interface User {
   password: string;
   name: string;
   rol_id: number;
-  department: string;
+  department_id: number;
 }
 
 export async function POST(req: NextRequest) {
@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
         // Crear el token JWT
         const token = jwt.sign(
           {
-            exp: Math.floor(Date.now() / 1000) + 60 * 60, // Expiración en 1 hora
+            exp: Math.floor(Date.now() / 1000) + 60 * 60,
             id: user.id,
             email: user.email,
             name: user.name,
             rol_id: user.rol_id,
-            department: user.department,
+            department_id: user.department_id,
           },
           "secret-json-web-token"
         );
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "strict",
-          maxAge: 60 * 60, // 1 hora
+          maxAge: 60 * 60,
           path: "/",
         });
 
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
             email: user.email,
             name: user.name,
             rol_id: user.rol_id,
-            department: user.department,
+            department_id: user.department_id,
           },
         });
         response.headers.set("Set-Cookie", serializedToken);
