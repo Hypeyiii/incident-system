@@ -67,16 +67,4 @@ export const navsideUser = [
     icon: <UserMinusIcon />,
     color: "#71e279",
   },
-  {
-    title: "Mis incidencias cerradas",
-    href: "/user/incidents/closed",
-    icon: <UserMinusIcon />,
-    color: "#71e279",
-  },
-  {
-    title: "Mis incidencias abiertas",
-    href: "/user/incidents/open",
-    icon: <UserMinusIcon />,
-    color: "#71e279",
-  },
 ];

@@ -19,7 +19,7 @@ export default function RootLayout({
     <div className={inter.className}>
         <Navbar />
         <SideNavbar />
-        <div className="fixed flex flex-col top-0 right-0 w-[85%] overflow-auto h-full mt-[57px] p-10 bg-[#cfc18c33]">
+        <div className="fixed flex flex-col top-0 right-0 w-[85%] overflow-auto h-full mt-[57px] p-10">
           {children}
         </div>
     </div>
